@@ -27,7 +27,8 @@
     "prepublishOnly": "npm run build"
   },
   "prettier": {
-    "trailingComma": "all"
+    "trailingComma": "all",
+    "singleQuote": true
   },
   "lint-staged": {
     "*.js": [
