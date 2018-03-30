@@ -31,6 +31,7 @@
   },
   "lint-staged": {
     "*.js": [
+      "npm run format",
       "eslint --fix",
       "jest --findRelatedTests",
       "git add"
