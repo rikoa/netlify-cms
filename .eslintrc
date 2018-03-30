@@ -1,7 +1,15 @@
 {
   "extends": [
-    "eslint-config-netlify"
+    "eslint:recommended",
+    "plugin:react/recommended"
   ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest": true,
+  },
+  "parser": "babel-eslint",
   "settings": {
     "import/resolver": {
       "webpack": {
