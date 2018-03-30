@@ -1,5 +1,5 @@
 .nc-collectionPage-top {
-  @apply(--cardTop);
+  @apply (--cardTop);
 }
 
 .nc-collectionPage-top-row {
@@ -10,18 +10,18 @@
 }
 
 .nc-collectionPage-top-description {
-  @apply(--cardTopDescription)
+  @apply (--cardTopDescription);
 }
 
 .nc-collectionPage-topHeading {
-  @apply(--cardTopHeading)
+  @apply (--cardTopHeading);
 }
 
 .nc-collectionPage-topNewButton {
-  @apply(--button);
-  @apply(--dropShadowDeep);
-  @apply(--buttonDefault);
-  @apply(--buttonGray);
+  @apply (--button);
+  @apply (--dropShadowDeep);
+  @apply (--buttonDefault);
+  @apply (--buttonGray);
 
   padding: 0 30px;
 }

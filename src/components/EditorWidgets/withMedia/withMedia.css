@@ -23,12 +23,12 @@
 
 .nc-imageControl-chooseButton,
 .nc-imageControl-changeButton {
-  @apply(--textBadge);
+  @apply (--textBadge);
   display: block;
 }
 
 .nc-imageControl-removeButton {
-  @apply(--textBadgeDanger);
+  @apply (--textBadgeDanger);
   display: block;
   margin-top: 12px;
 }

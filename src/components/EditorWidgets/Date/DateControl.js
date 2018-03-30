@@ -13,14 +13,12 @@ export default class DateControl extends React.Component {
     classNameWrapper: PropTypes.string.isRequired,
     setActiveStyle: PropTypes.func.isRequired,
     setInactiveStyle: PropTypes.func.isRequired,
-    value: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.string,
-    ]),
+    value: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     includeTime: PropTypes.bool,
   };
 
-  format = this.props.field.get('format') || (this.props.includeTime ? DEFAULT_DATETIME_FORMAT : DEFAULT_DATE_FORMAT);
+  format = this.props.field.get('format') ||
+    (this.props.includeTime ? DEFAULT_DATETIME_FORMAT : DEFAULT_DATE_FORMAT);
 
   componentDidMount() {
     const { value } = this.props;
@@ -45,7 +43,13 @@ export default class DateControl extends React.Component {
   };
 
   render() {
-    const { includeTime, value, classNameWrapper, setActiveStyle, setInactiveStyle } = this.props;
+    const {
+      includeTime,
+      value,
+      classNameWrapper,
+      setActiveStyle,
+      setInactiveStyle,
+    } = this.props;
     const format = this.format;
     return (
       <DateTime

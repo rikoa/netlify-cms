@@ -33,13 +33,16 @@ export default class EditorControl extends React.Component {
     return (
       <div className="nc-controlPane-control">
         <ul className="nc-controlPane-errors">
-          {
-            errors && errors.map(error =>
-              error.message &&
-              typeof error.message === 'string' &&
-              <li key={error.message.trim().replace(/[^a-z0-9]+/gi, '-')}>{error.message}</li>
-            )
-          }
+          {errors &&
+            errors.map(
+              error =>
+                error.message &&
+                typeof error.message === 'string' && (
+                  <li key={error.message.trim().replace(/[^a-z0-9]+/gi, '-')}>
+                    {error.message}
+                  </li>
+                ),
+            )}
         </ul>
         <label
           className={c({
@@ -67,7 +70,9 @@ export default class EditorControl extends React.Component {
           value={value}
           mediaPaths={mediaPaths}
           metadata={metadata}
-          onChange={(newValue, newMetadata) => onChange(fieldName, newValue, newMetadata)}
+          onChange={(newValue, newMetadata) =>
+            onChange(fieldName, newValue, newMetadata)
+          }
           onValidate={onValidate && partial(onValidate, fieldName)}
           onOpenMediaLibrary={onOpenMediaLibrary}
           onRemoveInsertedMedia={onRemoveInsertedMedia}

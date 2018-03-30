@@ -151,19 +151,25 @@ export default class Toolbar extends React.Component {
                 />
               }
             >
-              {plugins && plugins.toList().map((plugin, idx) => (
-                <DropdownItem key={idx} label={plugin.get('label')} onClick={() => onSubmit(plugin.get('id'))} />
-              ))}
+              {plugins &&
+                plugins
+                  .toList()
+                  .map((plugin, idx) => (
+                    <DropdownItem
+                      key={idx}
+                      label={plugin.get('label')}
+                      onClick={() => onSubmit(plugin.get('id'))}
+                    />
+                  ))}
             </Dropdown>
           </div>
         </div>
         <div className="nc-markdownWidget-toolbar-toggle">
           <span
             style={{ width: toggleOffLabelWidth }}
-            className={c(
-              'nc-markdownWidget-toolbar-toggle-label',
-              { 'nc-markdownWidget-toolbar-toggle-label-active': !rawMode },
-            )}
+            className={c('nc-markdownWidget-toolbar-toggle-label', {
+              'nc-markdownWidget-toolbar-toggle-label-active': !rawMode,
+            })}
           >
             {toggleOffLabel}
           </span>
@@ -175,10 +181,9 @@ export default class Toolbar extends React.Component {
           />
           <span
             style={{ width: toggleOnLabelWidth }}
-            className={c(
-              'nc-markdownWidget-toolbar-toggle-label',
-              { 'nc-markdownWidget-toolbar-toggle-label-active': rawMode },
-            )}
+            className={c('nc-markdownWidget-toolbar-toggle-label', {
+              'nc-markdownWidget-toolbar-toggle-label-active': rawMode,
+            })}
           >
             {toggleOnLabel}
           </span>

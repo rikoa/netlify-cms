@@ -1,7 +1,9 @@
 :root {
   --mediaLibraryCardWidth: 280px;
   --mediaLibraryCardMargin: 10px;
-  --mediaLibraryCardOutsideWidth: calc(var(--mediaLibraryCardWidth) + var(--mediaLibraryCardMargin) * 2);
+  --mediaLibraryCardOutsideWidth: calc(
+    var(--mediaLibraryCardWidth) + var(--mediaLibraryCardMargin) * 2
+  );
 }
 
 .nc-mediaLibrary-dialog {
@@ -42,8 +44,8 @@
 }
 
 .nc-mediaLibrary-uploadButton {
-  @apply(--buttonGray);
-  @apply(--dropShadowMain);
+  @apply (--buttonGray);
+  @apply (--dropShadowMain);
   margin-bottom: 0;
 
   & span {
@@ -55,8 +57,8 @@
   }
 
   & input {
-    height: .1px;
-    width: .1px;
+    height: 0.1px;
+    width: 0.1px;
     margin: 0;
     padding: 0;
     opacity: 0;
@@ -74,25 +76,24 @@
 .nc-mediaLibrary-uploadButton,
 .nc-mediaLibrary-deleteButton,
 .nc-mediaLibrary-insertButton {
-  @apply(--button);
-  @apply(--buttonDefault);
+  @apply (--button);
+  @apply (--buttonDefault);
   display: inline-block;
   margin-left: 15px;
 
   &[disabled],
   &.nc-mediaLibrary-uploadButton-disabled {
-    @apply(--buttonDisabled);
+    @apply (--buttonDisabled);
   }
 }
 
 .nc-mediaLibrary-deleteButton {
-  @apply(--buttonLightRed);
+  @apply (--buttonLightRed);
 }
 
 .nc-mediaLibrary-insertButton {
-  @apply(--buttonGreen);
+  @apply (--buttonGreen);
 }
-
 
 .nc-mediaLibrary-top {
   position: relative;
@@ -100,7 +101,7 @@
   justify-content: space-between;
 
   & .nc-mediaLibrary-close {
-    @apply(--dropShadowMiddle);
+    @apply (--dropShadowMiddle);
     display: flex;
     position: absolute;
     margin-right: -40px;
@@ -168,7 +169,7 @@
   display: flex;
   flex-wrap: wrap;
 
-  margin-left:  -10px;
+  margin-left: -10px;
   margin-right: -10px;
 }
 

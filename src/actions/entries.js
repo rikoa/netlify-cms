@@ -184,7 +184,6 @@ export function createDraftFromEntry(entry, metadata) {
   };
 }
 
-
 export function discardDraft() {
   return {
     type: DRAFT_DISCARD,
@@ -212,7 +211,6 @@ export function changeDraftFieldValidation(field, errors) {
   };
 }
 
-
 /*
  * Exported Thunk Action Creators
  */
@@ -222,17 +220,20 @@ export function loadEntry(collection, slug) {
     const state = getState();
     const backend = currentBackend(state.config);
     dispatch(entryLoading(collection, slug));
-    return backend.getEntry(collection, slug)
+    return backend
+      .getEntry(collection, slug)
       .then(loadedEntry => {
-        return dispatch(entryLoaded(collection, loadedEntry))
+        return dispatch(entryLoaded(collection, loadedEntry));
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
-        dispatch(notifSend({
-          message: `Failed to load entry: ${ error.message }`,
-          kind: 'danger',
-          dismissAfter: 8000,
-        }));
+        dispatch(
+          notifSend({
+            message: `Failed to load entry: ${error.message}`,
+            kind: 'danger',
+            dismissAfter: 8000,
+          }),
+        );
         dispatch(entryLoadError(error, collection, slug));
       });
   };
@@ -245,23 +246,44 @@ export function loadEntries(collection, page = 0) {
     }
     const state = getState();
     const backend = currentBackend(state.config);
-    const integration = selectIntegration(state, collection.get('name'), 'listEntries');
-    const provider = integration ? getIntegrationProvider(state.integrations, backend.getToken, integration) : backend;
-    dispatch(entriesLoading(collection));
-    provider.listEntries(collection, page).then(
-      response => dispatch(entriesLoaded(collection, response.entries.reverse(), response.pagination)),
-      error => dispatch(entriesFailed(collection, error))
+    const integration = selectIntegration(
+      state,
+      collection.get('name'),
+      'listEntries',
     );
+    const provider = integration
+      ? getIntegrationProvider(
+          state.integrations,
+          backend.getToken,
+          integration,
+        )
+      : backend;
+    dispatch(entriesLoading(collection));
+    provider
+      .listEntries(collection, page)
+      .then(
+        response =>
+          dispatch(
+            entriesLoaded(
+              collection,
+              response.entries.reverse(),
+              response.pagination,
+            ),
+          ),
+        error => dispatch(entriesFailed(collection, error)),
+      );
   };
 }
 
 export function createEmptyDraft(collection) {
-  return (dispatch) => {
+  return dispatch => {
     const dataFields = {};
-    collection.get('fields', List()).forEach((field) => {
+    collection.get('fields', List()).forEach(field => {
       dataFields[field.get('name')] = field.get('default');
     });
-    const newEntry = createEntry(collection.get('name'), '', '', { data: dataFields });
+    const newEntry = createEntry(collection.get('name'), '', '', {
+      data: dataFields,
+    });
     dispatch(emptyDraftCreated(newEntry));
   };
 }
@@ -274,22 +296,30 @@ export function persistEntry(collection) {
 
     // Early return if draft contains validation errors
     if (!fieldsErrors.isEmpty()) {
-      const hasPresenceErrors = fieldsErrors
-        .some(errors => errors.some(error => error.type && error.type === ValidationErrorTypes.PRESENCE));
+      const hasPresenceErrors = fieldsErrors.some(errors =>
+        errors.some(
+          error => error.type && error.type === ValidationErrorTypes.PRESENCE,
+        ),
+      );
 
       if (hasPresenceErrors) {
-        dispatch(notifSend({
-          message: 'Oops, you\'ve missed a required field. Please complete before saving.',
-          kind: 'danger',
-          dismissAfter: 8000,
-        }));
+        dispatch(
+          notifSend({
+            message:
+              "Oops, you've missed a required field. Please complete before saving.",
+            kind: 'danger',
+            dismissAfter: 8000,
+          }),
+        );
       }
 
       return Promise.reject();
     }
 
     const backend = currentBackend(state.config);
-    const assetProxies = entryDraft.get('mediaFiles').map(path => getAsset(state, path));
+    const assetProxies = entryDraft
+      .get('mediaFiles')
+      .map(path => getAsset(state, path));
     const entry = entryDraft.get('entry');
 
     /**
@@ -297,28 +327,42 @@ export function persistEntry(collection) {
      * update the entry and entryDraft with the serialized values.
      */
     const fields = selectFields(collection, entry.get('slug'));
-    const serializedData = serializeValues(entryDraft.getIn(['entry', 'data']), fields);
+    const serializedData = serializeValues(
+      entryDraft.getIn(['entry', 'data']),
+      fields,
+    );
     const serializedEntry = entry.set('data', serializedData);
     const serializedEntryDraft = entryDraft.set('entry', serializedEntry);
     dispatch(entryPersisting(collection, serializedEntry));
     return backend
-      .persistEntry(state.config, collection, serializedEntryDraft, assetProxies.toJS())
+      .persistEntry(
+        state.config,
+        collection,
+        serializedEntryDraft,
+        assetProxies.toJS(),
+      )
       .then(slug => {
-        dispatch(notifSend({
-          message: 'Entry saved',
-          kind: 'success',
-          dismissAfter: 4000,
-        }));
-        dispatch(entryPersisted(collection, serializedEntry, slug))
+        dispatch(
+          notifSend({
+            message: 'Entry saved',
+            kind: 'success',
+            dismissAfter: 4000,
+          }),
+        );
+        dispatch(entryPersisted(collection, serializedEntry, slug));
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
-        dispatch(notifSend({
-          message: `Failed to persist entry: ${ error }`,
-          kind: 'danger',
-          dismissAfter: 8000,
-        }));
-        return Promise.reject(dispatch(entryPersistFail(collection, serializedEntry, error)));
+        dispatch(
+          notifSend({
+            message: `Failed to persist entry: ${error}`,
+            kind: 'danger',
+            dismissAfter: 8000,
+          }),
+        );
+        return Promise.reject(
+          dispatch(entryPersistFail(collection, serializedEntry, error)),
+        );
       });
   };
 }
@@ -329,18 +373,23 @@ export function deleteEntry(collection, slug) {
     const backend = currentBackend(state.config);
 
     dispatch(entryDeleting(collection, slug));
-    return backend.deleteEntry(state.config, collection, slug)
-    .then(() => {
-      return dispatch(entryDeleted(collection, slug));
-    })
-    .catch((error) => {
-      dispatch(notifSend({
-        message: `Failed to delete entry: ${ error }`,
-        kind: 'danger',
-        dismissAfter: 8000,
-      }));
-      console.error(error);
-      return Promise.reject(dispatch(entryDeleteFail(collection, slug, error)));
-    });
+    return backend
+      .deleteEntry(state.config, collection, slug)
+      .then(() => {
+        return dispatch(entryDeleted(collection, slug));
+      })
+      .catch(error => {
+        dispatch(
+          notifSend({
+            message: `Failed to delete entry: ${error}`,
+            kind: 'danger',
+            dismissAfter: 8000,
+          }),
+        );
+        console.error(error);
+        return Promise.reject(
+          dispatch(entryDeleteFail(collection, slug, error)),
+        );
+      });
   };
 }

@@ -14,4 +14,3 @@ export { Toggle } from './Toggle/Toggle';
  * on the body that enables related styling.
  */
 import 'what-input';
-

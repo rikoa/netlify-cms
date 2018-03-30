@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import ReactToggled from 'react-toggled';
 import c from 'classnames';
 
@@ -9,10 +9,10 @@ export const Toggle = ({
   classNameBackground,
   classNameSwitch,
   onFocus,
-  onBlur
-}) =>
+  onBlur,
+}) => (
   <ReactToggled on={active} onToggle={onChange}>
-    {({on, getElementTogglerProps}) => (
+    {({ on, getElementTogglerProps }) => (
       <span
         className={c('nc-toggle', className, { 'nc-toggle-active': on })}
         role="switch"
@@ -21,8 +21,9 @@ export const Toggle = ({
         onBlur={onBlur}
         {...getElementTogglerProps()}
       >
-        <span className={`nc-toggle-background ${classNameBackground}`}/>
-        <span className={`nc-toggle-switch ${classNameSwitch}`}/>
+        <span className={`nc-toggle-background ${classNameBackground}`} />
+        <span className={`nc-toggle-switch ${classNameSwitch}`} />
       </span>
     )}
-  </ReactToggled>;
+  </ReactToggled>
+);

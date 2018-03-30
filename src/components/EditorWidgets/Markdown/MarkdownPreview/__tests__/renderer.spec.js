@@ -38,16 +38,20 @@ Text with **bold** & _em_ elements
 
 ###### H6
 `;
-        const component = shallow(<MarkdownPreview value={markdownToHtml(value)} />);
+        const component = shallow(
+          <MarkdownPreview value={markdownToHtml(value)} />,
+        );
         expect(component.html()).toMatchSnapshot();
       });
     });
 
     describe('Headings', () => {
       for (const heading of [...Array(6).keys()]) {
-        it(`should render Heading ${ heading + 1 }`, () => {
+        it(`should render Heading ${heading + 1}`, () => {
           const value = padStart(' Title', heading + 7, '#');
-          const component = shallow(<MarkdownPreview value={markdownToHtml(value)} />);
+          const component = shallow(
+            <MarkdownPreview value={markdownToHtml(value)} />,
+          );
           expect(component.html()).toMatchSnapshot();
         });
       }
@@ -66,7 +70,9 @@ Text with **bold** & _em_ elements
         1. Sub-Sublist 3
 1. ol item 3
 `;
-        const component = shallow(<MarkdownPreview value={markdownToHtml(value)} />);
+        const component = shallow(
+          <MarkdownPreview value={markdownToHtml(value)} />,
+        );
         expect(component.html()).toMatchSnapshot();
       });
     });
@@ -80,7 +86,9 @@ I get 10 times more traffic from [Google] [1] than from [Yahoo] [2] or [MSN] [3]
   [2]: http://search.yahoo.com/  "Yahoo Search"
   [3]: http://search.msn.com/    "MSN Search"
 `;
-        const component = shallow(<MarkdownPreview value={markdownToHtml(value)} />);
+        const component = shallow(
+          <MarkdownPreview value={markdownToHtml(value)} />,
+        );
         expect(component.html()).toMatchSnapshot();
       });
     });
@@ -88,13 +96,17 @@ I get 10 times more traffic from [Google] [1] than from [Yahoo] [2] or [MSN] [3]
     describe('Code', () => {
       it('should render code', () => {
         const value = 'Use the `printf()` function.';
-        const component = shallow(<MarkdownPreview value={markdownToHtml(value)} />);
+        const component = shallow(
+          <MarkdownPreview value={markdownToHtml(value)} />,
+        );
         expect(component.html()).toMatchSnapshot();
       });
 
       it('should render code 2', () => {
         const value = '``There is a literal backtick (`) here.``';
-        const component = shallow(<MarkdownPreview value={markdownToHtml(value)} />);
+        const component = shallow(
+          <MarkdownPreview value={markdownToHtml(value)} />,
+        );
         expect(component.html()).toMatchSnapshot();
       });
     });
@@ -116,7 +128,9 @@ I get 10 times more traffic from [Google] [1] than from [Yahoo] [2] or [MSN] [3]
 
 <h1 style="display: block; border: 10px solid #f00; width: 100%">Test</h1>
 `;
-        const component = shallow(<MarkdownPreview value={markdownToHtml(value)} />);
+        const component = shallow(
+          <MarkdownPreview value={markdownToHtml(value)} />,
+        );
         expect(component.html()).toMatchSnapshot();
       });
     });
@@ -125,7 +139,9 @@ I get 10 times more traffic from [Google] [1] than from [Yahoo] [2] or [MSN] [3]
   describe('HTML rendering', () => {
     it('should render HTML', () => {
       const value = '<p>Paragraph with <em>inline</em> element</p>';
-      const component = shallow(<MarkdownPreview value={markdownToHtml(value)} />);
+      const component = shallow(
+        <MarkdownPreview value={markdownToHtml(value)} />,
+      );
       expect(component.html()).toMatchSnapshot();
     });
   });

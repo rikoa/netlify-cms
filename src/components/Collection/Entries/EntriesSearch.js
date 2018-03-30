@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { selectSearchedEntries } from 'Reducers';
 import {
   searchEntries as actionSearchEntries,
-  clearSearch as actionClearSearch
+  clearSearch as actionClearSearch,
 } from 'Actions/search';
 import Entries from './Entries';
 
@@ -36,12 +36,12 @@ class EntriesSearch extends React.Component {
     this.props.clearSearch();
   }
 
-  handleLoadMore = (page) => {
+  handleLoadMore = page => {
     const { searchTerm, searchEntries } = this.props;
     if (!isNaN(page)) searchEntries(searchTerm, page);
   };
 
-  render () {
+  render() {
     const { collections, entries, publicFolder, page, isFetching } = this.props;
     return (
       <Entries

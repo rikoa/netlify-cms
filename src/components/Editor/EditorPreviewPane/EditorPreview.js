@@ -7,7 +7,8 @@ function isVisible(field) {
 }
 
 const style = {
-  fontFamily: 'Roboto, "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif',
+  fontFamily:
+    'Roboto, "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif',
 };
 
 /**

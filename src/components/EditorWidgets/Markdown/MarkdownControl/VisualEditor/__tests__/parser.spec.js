@@ -8,30 +8,34 @@ const testPlugins = fromJS([
   {
     label: 'Image',
     id: 'image',
-    fromBlock: match => match && {
-      image: match[2],
-      alt: match[1],
-    },
-    toBlock: data => `![${ data.alt }](${ data.image })`,
+    fromBlock: match =>
+      match && {
+        image: match[2],
+        alt: match[1],
+      },
+    toBlock: data => `![${data.alt}](${data.image})`,
     toPreview: data => <img src={data.image} alt={data.alt} />,
     pattern: /^!\[([^\]]+)]\(([^)]+)\)$/,
-    fields: [{
-      label: 'Image',
-      name: 'image',
-      widget: 'image',
-    }, {
-      label: 'Alt Text',
-      name: 'alt',
-    }],
+    fields: [
+      {
+        label: 'Image',
+        name: 'image',
+        widget: 'image',
+      },
+      {
+        label: 'Alt Text',
+        name: 'alt',
+      },
+    ],
   },
   {
-    id: "youtube",
-    label: "Youtube",
-    fields: [{name: 'id', label: 'Youtube Video ID'}],
+    id: 'youtube',
+    label: 'Youtube',
+    fields: [{ name: 'id', label: 'Youtube Video ID' }],
     pattern: /^{{<\s?youtube (\S+)\s?>}}/,
     fromBlock: function(match) {
       return {
-        id: match[1]
+        id: match[1],
       };
     },
     toBlock: function(obj) {
@@ -39,14 +43,16 @@ const testPlugins = fromJS([
     },
     toPreview: function(obj) {
       return (
-        '<img src="http://img.youtube.com/vi/' + obj.id + '/maxresdefault.jpg" alt="Youtube Video"/>'
+        '<img src="http://img.youtube.com/vi/' +
+        obj.id +
+        '/maxresdefault.jpg" alt="Youtube Video"/>'
       );
-    }
+    },
   },
 ]);
 
-describe("Compile markdown to Slate Raw AST", () => {
-  it("should compile simple markdown", () => {
+describe('Compile markdown to Slate Raw AST', () => {
+  it('should compile simple markdown', () => {
     const value = `
 # H1
 
@@ -55,7 +61,7 @@ sweet body
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile a markdown ordered list", () => {
+  it('should compile a markdown ordered list', () => {
     const value = `
 # H1
 
@@ -66,7 +72,7 @@ sweet body
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile bulleted lists", () => {
+  it('should compile bulleted lists', () => {
     const value = `
 # H1
 
@@ -77,7 +83,7 @@ sweet body
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile multiple header levels", () => {
+  it('should compile multiple header levels', () => {
     const value = `
 # H1
 
@@ -88,7 +94,7 @@ sweet body
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile horizontal rules", () => {
+  it('should compile horizontal rules', () => {
     const value = `
 # H1
 
@@ -99,7 +105,7 @@ blue moon
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile horizontal rules", () => {
+  it('should compile horizontal rules', () => {
     const value = `
 # H1
 
@@ -110,7 +116,7 @@ blue moon
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile soft breaks (double space)", () => {
+  it('should compile soft breaks (double space)', () => {
     const value = `
 blue moon  
 footballs
@@ -118,14 +124,14 @@ footballs
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile images", () => {
+  it('should compile images', () => {
     const value = `
 ![super](duper.jpg)
 `;
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile code blocks", () => {
+  it('should compile code blocks', () => {
     const value = `
 \`\`\`javascript
 var a = 1;
@@ -134,7 +140,7 @@ var a = 1;
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile nested inline markup", () => {
+  it('should compile nested inline markup', () => {
     const value = `
 # Word
 
@@ -145,7 +151,7 @@ perhaps **scalding** even
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile inline code", () => {
+  it('should compile inline code', () => {
     const value = `
 # Word
 
@@ -154,7 +160,7 @@ This is some sweet \`inline code\` yo!
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile links", () => {
+  it('should compile links', () => {
     const value = `
 # Word
 
@@ -163,7 +169,7 @@ How far is it to [Google](https://google.com) land?
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile plugins", () => {
+  it('should compile plugins', () => {
     const value = `
 ![test](test.png)
 
@@ -172,7 +178,7 @@ How far is it to [Google](https://google.com) land?
     expect(parser(value)).toMatchSnapshot();
   });
 
-  it("should compile kitchen sink example", () => {
+  it('should compile kitchen sink example', () => {
     const value = `
 # An exhibit of Markdown
 

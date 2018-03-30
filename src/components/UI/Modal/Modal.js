@@ -8,7 +8,7 @@ export class Modal extends React.Component {
     isOpen: PropTypes.bool.isRequired,
     className: PropTypes.string,
     onClose: PropTypes.func.isRequired,
-  }
+  };
 
   componentDidMount() {
     ReactModal.setAppElement('#nc-root');

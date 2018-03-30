@@ -11,8 +11,15 @@ import EditorControl from 'Editor/EditorControlPane/EditorControl';
 const TopBar = ({ collapsed, onCollapseToggle }) => (
   <div className="nc-objectControl-topBar">
     <div className="nc-objectControl-objectCollapseToggle">
-      <button className="nc-listControl-listCollapseToggleButton" onClick={onCollapseToggle}>
-        <Icon type="chevron" direction={collapsed ? 'right' : 'down'} size="small" />
+      <button
+        className="nc-listControl-listCollapseToggleButton"
+        onClick={onCollapseToggle}
+      >
+        <Icon
+          type="chevron"
+          direction={collapsed ? 'right' : 'down'}
+          size="small"
+        />
       </button>
     </div>
   </div>
@@ -94,7 +101,7 @@ export default class ObjectControl extends Component {
 
   handleCollapseToggle = () => {
     this.setState({ collapsed: !this.state.collapsed });
-  }
+  };
 
   render() {
     const { field, forID, classNameWrapper, forList } = this.props;
@@ -104,9 +111,19 @@ export default class ObjectControl extends Component {
 
     if (multiFields) {
       return (
-        <div id={forID} className={c(classNameWrapper, 'nc-objectControl-root')}>
-          { forList ? null : <TopBar collapsed={collapsed} onCollapseToggle={this.handleCollapseToggle} /> }
-          { collapsed ? null : multiFields.map((f, idx) => this.controlFor(f, idx)) }
+        <div
+          id={forID}
+          className={c(classNameWrapper, 'nc-objectControl-root')}
+        >
+          {forList ? null : (
+            <TopBar
+              collapsed={collapsed}
+              onCollapseToggle={this.handleCollapseToggle}
+            />
+          )}
+          {collapsed
+            ? null
+            : multiFields.map((f, idx) => this.controlFor(f, idx))}
         </div>
       );
     } else if (singleField) {

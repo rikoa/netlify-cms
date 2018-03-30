@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from "react-immutable-proptypes";
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { isBoolean } from 'lodash';
 import { Toggle } from 'UI';
 
@@ -13,7 +13,7 @@ export default class BooleanControl extends React.Component {
       onChange,
       classNameWrapper,
       setActiveStyle,
-      setInactiveStyle
+      setInactiveStyle,
     } = this.props;
     return (
       <div className={`${classNameWrapper} nc-booleanControl-switch`}>

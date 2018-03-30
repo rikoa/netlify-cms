@@ -29,10 +29,10 @@
 }
 
 .nc-gitGatewayAuthenticationPage-button {
-  @apply(--button);
-  @apply(--dropShadowDeep);
-  @apply(--buttonDefault);
-  @apply(--buttonGray);
+  @apply (--button);
+  @apply (--dropShadowDeep);
+  @apply (--buttonDefault);
+  @apply (--buttonGray);
 
   padding: 0 30px;
   display: block;

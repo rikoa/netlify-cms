@@ -33,10 +33,17 @@ class EntriesCollection extends React.Component {
   handleLoadMore = page => {
     const { collection, loadEntries } = this.props;
     loadEntries(collection, page);
-  }
+  };
 
-  render () {
-    const { collection, entries, publicFolder, page, isFetching, viewStyle } = this.props;
+  render() {
+    const {
+      collection,
+      entries,
+      publicFolder,
+      page,
+      isFetching,
+      viewStyle,
+    } = this.props;
 
     return (
       <Entries
@@ -60,7 +67,10 @@ function mapStateToProps(state, ownProps) {
   const page = state.entries.getIn(['pages', collection.get('name'), 'page']);
 
   const entries = selectEntries(state, collection.get('name'));
-  const isFetching = state.entries.getIn(['pages', collection.get('name'), 'isFetching'], false);
+  const isFetching = state.entries.getIn(
+    ['pages', collection.get('name'), 'isFetching'],
+    false,
+  );
 
   return { publicFolder, collection, page, entries, isFetching, viewStyle };
 }

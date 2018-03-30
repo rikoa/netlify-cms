@@ -1,5 +1,5 @@
 .nc-editor-toggle {
-  @apply(--dropShadowMiddle);
+  @apply (--dropShadowMiddle);
   background-color: #fff;
   color: var(--colorInactive);
   border-radius: 32px;

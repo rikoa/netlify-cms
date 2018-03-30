@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from "react-immutable-proptypes";
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import uuid from 'uuid/v4';
 import { truncateMiddle } from 'Lib/textHelper';
 
@@ -42,7 +42,7 @@ export default function withMediaControl(forImage) {
        * path is different than the value in `nextProps`, update.
        */
       const mediaPath = nextProps.mediaPaths.get(this.controlID);
-      if (mediaPath && (nextProps.value !== mediaPath)) {
+      if (mediaPath && nextProps.value !== mediaPath) {
         return true;
       }
 
@@ -60,7 +60,7 @@ export default function withMediaControl(forImage) {
     }
 
     handleChange = e => {
-      const { field, onOpenMediaLibrary} = this.props;
+      const { field, onOpenMediaLibrary } = this.props;
       e.preventDefault();
       return onOpenMediaLibrary({
         controlID: this.controlID,
@@ -88,33 +88,40 @@ export default function withMediaControl(forImage) {
       return (
         <div className={`${classNameWrapper} nc-imageControl-imageUpload`}>
           <span className="nc-imageControl-message">
-            {
-              fileName
-                ? <div className="nc-imageControl-content">
-                    {
-                      forImage
-                        ? <div className="nc-imageControl-imageWrapper">
-                            <img src={getAsset(value)}/>
-                          </div>
-                        : null
-                    }
-                    <div>
-                      <span className="nc-imageControl-filename">{fileName}</span>
-                      <button className="nc-imageControl-changeButton" onClick={this.handleChange}>
-                        Choose different {subject}
-                      </button>
-                      <button className="nc-imageControl-removeButton" onClick={this.handleRemove}>
-                        Remove {subject}
-                      </button>
-                    </div>
+            {fileName ? (
+              <div className="nc-imageControl-content">
+                {forImage ? (
+                  <div className="nc-imageControl-imageWrapper">
+                    <img src={getAsset(value)} />
                   </div>
-                : <button className="nc-imageControl-chooseButton" onClick={this.handleChange}>
-                    Choose {article} {subject}
+                ) : null}
+                <div>
+                  <span className="nc-imageControl-filename">{fileName}</span>
+                  <button
+                    className="nc-imageControl-changeButton"
+                    onClick={this.handleChange}
+                  >
+                    Choose different {subject}
                   </button>
-            }
+                  <button
+                    className="nc-imageControl-removeButton"
+                    onClick={this.handleRemove}
+                  >
+                    Remove {subject}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                className="nc-imageControl-chooseButton"
+                onClick={this.handleChange}
+              >
+                Choose {article} {subject}
+              </button>
+            )}
           </span>
         </div>
       );
     }
   };
-};
+}

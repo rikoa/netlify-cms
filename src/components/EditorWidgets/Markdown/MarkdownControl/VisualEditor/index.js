@@ -4,7 +4,11 @@ import { get, isEmpty, debounce } from 'lodash';
 import { Map } from 'immutable';
 import { Value, Document, Block, Text } from 'slate';
 import { Editor as Slate } from 'slate-react';
-import { slateToMarkdown, markdownToSlate, htmlToSlate } from 'EditorWidgets/Markdown/serializers';
+import {
+  slateToMarkdown,
+  markdownToSlate,
+  htmlToSlate,
+} from 'EditorWidgets/Markdown/serializers';
 import { getEditorComponents } from 'Lib/registry';
 import Toolbar from 'EditorWidgets/Markdown/MarkdownControl/Toolbar/Toolbar';
 import { renderNode, renderMark } from './renderers';
@@ -14,16 +18,22 @@ import onKeyDown from './keys';
 
 const createEmptyRawDoc = () => {
   const emptyText = Text.create('');
-  const emptyBlock = Block.create({ kind: 'block', type: 'paragraph', nodes: [ emptyText ] });
+  const emptyBlock = Block.create({
+    kind: 'block',
+    type: 'paragraph',
+    nodes: [emptyText],
+  });
   return { nodes: [emptyBlock] };
 };
 
-const createSlateValue = (rawValue) => {
+const createSlateValue = rawValue => {
   const rawDoc = rawValue && markdownToSlate(rawValue);
-  const rawDocHasNodes = !isEmpty(get(rawDoc, 'nodes'))
-  const document = Document.fromJSON(rawDocHasNodes ? rawDoc : createEmptyRawDoc());
+  const rawDocHasNodes = !isEmpty(get(rawDoc, 'nodes'));
+  const document = Document.fromJSON(
+    rawDocHasNodes ? rawDoc : createEmptyRawDoc(),
+  );
   return Value.create({ document });
-}
+};
 
 export default class Editor extends Component {
   static propTypes = {
@@ -54,14 +64,19 @@ export default class Editor extends Component {
     const ast = htmlToSlate(data.html);
     const doc = Document.fromJSON(ast);
     return change.insertFragment(doc);
-  }
+  };
 
-  selectionHasMark = type => this.state.value.activeMarks.some(mark => mark.type === type);
-  selectionHasBlock = type => this.state.value.blocks.some(node => node.type === type);
+  selectionHasMark = type =>
+    this.state.value.activeMarks.some(mark => mark.type === type);
+  selectionHasBlock = type =>
+    this.state.value.blocks.some(node => node.type === type);
 
   handleMarkClick = (event, type) => {
     event.preventDefault();
-    const resolvedChange = this.state.value.change().focus().toggleMark(type);
+    const resolvedChange = this.state.value
+      .change()
+      .focus()
+      .toggleMark(type);
     this.ref.onChange(resolvedChange);
     this.setState({ value: resolvedChange.value });
   };
@@ -77,10 +92,8 @@ export default class Editor extends Component {
     if (!['bulleted-list', 'numbered-list'].includes(type)) {
       const isActive = this.selectionHasBlock(type);
       change = change.setBlock(isActive ? 'paragraph' : type);
-    }
-
-    // Handle the extra wrapping required for list buttons.
-    else {
+    } else {
+      // Handle the extra wrapping required for list buttons.
       const isSameListType = value.blocks.some(block => {
         return !!doc.getClosest(block.key, parent => parent.type === type);
       });
@@ -89,8 +102,11 @@ export default class Editor extends Component {
       if (isInList && isSameListType) {
         change = change.call(unwrapList, type);
       } else if (isInList) {
-        const currentListType = type === 'bulleted-list' ? 'numbered-list' : 'bulleted-list';
-        change = change.call(unwrapList, currentListType).call(wrapInList, type);
+        const currentListType =
+          type === 'bulleted-list' ? 'numbered-list' : 'bulleted-list';
+        change = change
+          .call(unwrapList, currentListType)
+          .call(wrapInList, type);
       } else {
         change = change.call(wrapInList, type);
       }
@@ -112,9 +128,7 @@ export default class Editor extends Component {
     // should simply unlink them.
     if (this.hasLinks()) {
       change = change.unwrapInline('link');
-    }
-
-    else {
+    } else {
       const url = window.prompt('Enter the URL of the link');
 
       // If nothing is entered in the URL prompt, do nothing.
@@ -122,9 +136,7 @@ export default class Editor extends Component {
 
       // If no text is selected, use the entered URL as text.
       if (change.value.isCollapsed) {
-        change = change
-          .insertText(url)
-          .extend(0 - url.length);
+        change = change.insertText(url).extend(0 - url.length);
       }
 
       change = change
@@ -148,7 +160,7 @@ export default class Editor extends Component {
         shortcodeData: Map(),
       },
       isVoid: true,
-      nodes
+      nodes,
     };
     let change = value.change();
     const { focusBlock } = change.value;
@@ -169,7 +181,6 @@ export default class Editor extends Component {
     this.props.onMode('raw');
   };
 
-
   handleDocumentChange = debounce(change => {
     const raw = change.value.document.toJSON();
     const plugins = this.state.shortcodePlugins;
@@ -186,7 +197,7 @@ export default class Editor extends Component {
 
   processRef = ref => {
     this.ref = ref;
-  }
+  };
 
   render() {
     const { onAddAsset, getAsset, className } = this.props;

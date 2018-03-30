@@ -2,25 +2,12 @@
   /**
    * Font Stacks
    */
-  --fontFamilyPrimary:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif,
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Segoe UI Symbol";
+  --fontFamilyPrimary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
 
-  --fontFamilyMono:
-    'SFMono-Regular',
-    Consolas,
-    "Liberation Mono",
-    Menlo,
-    Courier,
-    monospace;
+  --fontFamilyMono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo,
+    Courier, monospace;
 
   /**
    * Theme Colors
@@ -74,7 +61,7 @@
   --controlLabelColor: #7a8291;
 
   --topBarHeight: 56px;
-  --transition: .2s ease;
+  --transition: 0.2s ease;
   --inputPadding: 16px 20px;
   --borderRadius: 5px;
   --richTextEditorMinHeight: 300px;
@@ -84,22 +71,22 @@
   --pageMargin: 84px 18px;
 
   --dropShadow: {
-    box-shadow: 0 2px 4px 0  rgba(19, 39, 48, .12);
+    box-shadow: 0 2px 4px 0 rgba(19, 39, 48, 0.12);
   }
 
   --dropShadowMain: {
-    box-shadow: 0 2px 6px 0  rgba(68, 74, 87, 0.05),
-                0 1px 3px 0  rgba(68, 74, 87, 0.10);
+    box-shadow: 0 2px 6px 0 rgba(68, 74, 87, 0.05),
+      0 1px 3px 0 rgba(68, 74, 87, 0.1);
   }
 
   --dropShadowMiddle: {
-    box-shadow: 0 2px 6px 0  rgba(68, 74, 87, 0.15),
-                0 1px 3px 0  rgba(68, 74, 87, 0.30);
+    box-shadow: 0 2px 6px 0 rgba(68, 74, 87, 0.15),
+      0 1px 3px 0 rgba(68, 74, 87, 0.3);
   }
 
   --dropShadowDeep: {
     box-shadow: 0 4px 12px 0 rgba(68, 74, 87, 0.15),
-                0 1px 3px  0 rgba(68, 74, 87, 0.25);
+      0 1px 3px 0 rgba(68, 74, 87, 0.25);
   }
 
   --caretDown: {
@@ -113,7 +100,7 @@
   }
 
   --card: {
-    @apply(--dropShadowMain);
+    @apply (--dropShadowMain);
     border-radius: 5px;
     background-color: #fff;
   }
@@ -161,27 +148,27 @@
   }
 
   --buttonGreen {
-    background-color: #AAE31F;
+    background-color: #aae31f;
     color: #005614;
   }
 
   --buttonLightRed {
-    background-color: #FCEFEA;
-    color: #FF003B;
+    background-color: #fcefea;
+    color: #ff003b;
   }
 
   --buttonLightBlue {
-    background-color: #E8F5FE;
-    color: #3A69C7;
+    background-color: #e8f5fe;
+    color: #3a69c7;
   }
 
   --buttonLightTeal {
-    background-color: #DDF5F9;
-    color: #1195AA;
+    background-color: #ddf5f9;
+    color: #1195aa;
   }
 
   --buttonTeal {
-    background-color: #17A2B8;
+    background-color: #17a2b8;
     color: white;
   }
 
@@ -202,13 +189,13 @@
   }
 
   --textBadgeSuccess: {
-    @apply(--textBadge);
+    @apply (--textBadge);
     color: #005614;
     background-color: #caef6f;
   }
 
   --textBadgeDanger: {
-    @apply(--textBadge);
+    @apply (--textBadge);
     color: #ff003b;
     background-color: #fbe0d7;
   }
@@ -219,7 +206,7 @@
   }
 
   --cardTop: {
-    @apply(--card);
+    @apply (--card);
     width: var(--topCardWidth);
     max-width: 100%;
     padding: 18px 20px;
@@ -242,22 +229,22 @@
   }
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
 }
 
 :focus {
   outline: -webkit-focus-ring-color auto 5px;
-
 }
 
 /**
  * Don't show outlines if the user is utilizing mouse rather than keyboard.
  */
-[data-whatintent="mouse"] *:focus {
+[data-whatintent='mouse'] *:focus {
   outline: none;
 }
-
 
 input {
   border: 0;
@@ -271,11 +258,18 @@ body {
   margin: 0;
 }
 
-ul, ol {
+ul,
+ol {
   padding-left: 0;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   font-family: var(--fontFamilyPrimary);
   color: var(--colorTextLead);
   font-size: 15px;
@@ -283,7 +277,12 @@ h1, h2, h3, h4, h5, h6, p {
   margin-top: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 500;
 }
 
@@ -305,26 +304,26 @@ a {
 }
 
 button {
-  @apply(--button);
+  @apply (--button);
 
   &.LightBlue {
-    @apply(--buttonLightBlue);
+    @apply (--buttonLightBlue);
   }
 
   &.Teal {
-    @apply(--buttonTeal);
+    @apply (--buttonTeal);
   }
 
   &.LightTeal {
-    @apply(--buttonLightTeal);
+    @apply (--buttonLightTeal);
   }
 
   &.LightRed {
-    @apply(--buttonLightRed);
+    @apply (--buttonLightRed);
   }
 
   &.Green {
-    @apply(--buttonGreen);
+    @apply (--buttonGreen);
   }
 }
 

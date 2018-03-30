@@ -63,7 +63,13 @@ export function querying(namespace, collection, searchFields, searchTerm) {
   };
 }
 
-export function querySuccess(namespace, collection, searchFields, searchTerm, response) {
+export function querySuccess(
+  namespace,
+  collection,
+  searchFields,
+  searchTerm,
+  response,
+) {
   return {
     type: QUERY_SUCCESS,
     payload: {
@@ -76,7 +82,13 @@ export function querySuccess(namespace, collection, searchFields, searchTerm, re
   };
 }
 
-export function queryFailure(namespace, collection, searchFields, searchTerm, error) {
+export function queryFailure(
+  namespace,
+  collection,
+  searchFields,
+  searchTerm,
+  error,
+) {
   return {
     type: QUERY_SUCCESS,
     payload: {
@@ -97,7 +109,6 @@ export function clearSearch() {
   return { type: SEARCH_CLEAR };
 }
 
-
 /*
  * Exported Thunk Action Creators
  */
@@ -107,17 +118,28 @@ export function searchEntries(searchTerm, page = 0) {
   return (dispatch, getState) => {
     const state = getState();
     const allCollections = state.collections.keySeq().toArray();
-    const collections = allCollections.filter(collection => selectIntegration(state, collection, 'search'));
+    const collections = allCollections.filter(collection =>
+      selectIntegration(state, collection, 'search'),
+    );
     const integration = selectIntegration(state, collections[0], 'search');
     if (!integration) {
       localSearch(searchTerm, getState, dispatch);
     } else {
-      const provider = getIntegrationProvider(state.integrations, currentBackend(state.config).getToken, integration);
-      dispatch(searchingEntries(searchTerm));
-      provider.search(collections, searchTerm, page).then(
-        response => dispatch(searchSuccess(searchTerm, response.entries, response.pagination)),
-        error => dispatch(searchFailure(searchTerm, error))
+      const provider = getIntegrationProvider(
+        state.integrations,
+        currentBackend(state.config).getToken,
+        integration,
       );
+      dispatch(searchingEntries(searchTerm));
+      provider
+        .search(collections, searchTerm, page)
+        .then(
+          response =>
+            dispatch(
+              searchSuccess(searchTerm, response.entries, response.pagination),
+            ),
+          error => dispatch(searchFailure(searchTerm, error)),
+        );
     }
   };
 }
@@ -130,13 +152,44 @@ export function query(namespace, collection, searchFields, searchTerm) {
     const integration = selectIntegration(state, collection, 'search');
     dispatch(querying(namespace, collection, searchFields, searchTerm));
     if (!integration) {
-      localQuery(namespace, collection, searchFields, searchTerm, state, dispatch);
-    } else {
-      const provider = getIntegrationProvider(state.integrations, currentBackend(state.config).getToken, integration);
-      provider.searchBy(searchFields.map(f => `data.${ f }`), collection, searchTerm).then(
-        response => dispatch(querySuccess(namespace, collection, searchFields, searchTerm, response)),
-        error => dispatch(queryFailure(namespace, collection, searchFields, searchTerm, error))
+      localQuery(
+        namespace,
+        collection,
+        searchFields,
+        searchTerm,
+        state,
+        dispatch,
       );
+    } else {
+      const provider = getIntegrationProvider(
+        state.integrations,
+        currentBackend(state.config).getToken,
+        integration,
+      );
+      provider
+        .searchBy(searchFields.map(f => `data.${f}`), collection, searchTerm)
+        .then(
+          response =>
+            dispatch(
+              querySuccess(
+                namespace,
+                collection,
+                searchFields,
+                searchTerm,
+                response,
+              ),
+            ),
+          error =>
+            dispatch(
+              queryFailure(
+                namespace,
+                collection,
+                searchFields,
+                searchTerm,
+                error,
+              ),
+            ),
+        );
     }
   };
 }
@@ -154,27 +207,34 @@ function localSearch(searchTerm, getState, dispatch) {
           selectInferedField(collection, 'author'),
         ];
         const collectionEntries = selectEntries(state, collectionKey).toJS();
-        const filteredEntries = fuzzy.filter(searchTerm, collectionEntries, {
-          extract: entry => searchFields.reduce((acc, field) => {
-            const f = entry.data[field];
-            return f ? `${ acc } ${ f }` : acc;
-          }, ""),
-        }).filter(entry => entry.score > 5);
+        const filteredEntries = fuzzy
+          .filter(searchTerm, collectionEntries, {
+            extract: entry =>
+              searchFields.reduce((acc, field) => {
+                const f = entry.data[field];
+                return f ? `${acc} ${f}` : acc;
+              }, ''),
+          })
+          .filter(entry => entry.score > 5);
         localResults[collectionKey] = true;
         localResults.entries = localResults.entries.concat(filteredEntries);
-        
+
         const returnedKeys = Object.keys(localResults);
         const allCollections = state.collections.keySeq().toArray();
         if (allCollections.every(v => returnedKeys.indexOf(v) !== -1)) {
-          const sortedResults = localResults.entries.sort((a, b) => {
-            if (a.score > b.score) return -1;
-            if (a.score < b.score) return 1;
-            return 0;
-          }).map(f => f.original);
+          const sortedResults = localResults.entries
+            .sort((a, b) => {
+              if (a.score > b.score) return -1;
+              if (a.score < b.score) return 1;
+              return 0;
+            })
+            .map(f => f.original);
           if (allCollections.size > 3 || localResults.entries.length > 30) {
-            console.warn('The Netlify CMS is currently using a Built-in search.' +
-            '\nWhile this works great for small sites, bigger projects might benefit from a separate search integration.' + 
-            '\nPlease refer to the documentation for more information');
+            console.warn(
+              'The Netlify CMS is currently using a Built-in search.' +
+                '\nWhile this works great for small sites, bigger projects might benefit from a separate search integration.' +
+                '\nPlease refer to the documentation for more information',
+            );
           }
           dispatch(searchSuccess(searchTerm, sortedResults, 0));
         }
@@ -183,27 +243,38 @@ function localSearch(searchTerm, getState, dispatch) {
         // Dispatch loadEntries and wait before redispatching this action again.
         dispatch({
           type: WAIT_UNTIL_ACTION,
-          predicate: action => (action.type === ENTRIES_SUCCESS && action.payload.collection === collectionKey),
+          predicate: action =>
+            action.type === ENTRIES_SUCCESS &&
+            action.payload.collection === collectionKey,
           run: () => processCollection(collection, collectionKey),
         });
         dispatch(loadEntries(collection));
       }
     }
     getState().collections.forEach(processCollection);
-  }());
+  })();
 }
 
-
-function localQuery(namespace, collection, searchFields, searchTerm, state, dispatch) {
+function localQuery(
+  namespace,
+  collection,
+  searchFields,
+  searchTerm,
+  state,
+  dispatch,
+) {
   // Check if entries in this collection were already loaded
   if (state.entries.hasIn(['pages', collection, 'ids'])) {
     const entries = selectEntries(state, collection).toJS();
-    const filteredEntries = fuzzy.filter(searchTerm, entries, {
-      extract: entry => searchFields.reduce((acc, field) => {
-        const f = entry.data[field];
-        return f ? `${ acc } ${ f }` : acc;
-      }, ""),
-    }).filter(entry => entry.score > 5);
+    const filteredEntries = fuzzy
+      .filter(searchTerm, entries, {
+        extract: entry =>
+          searchFields.reduce((acc, field) => {
+            const f = entry.data[field];
+            return f ? `${acc} ${f}` : acc;
+          }, ''),
+      })
+      .filter(entry => entry.score > 5);
 
     const resultObj = {
       query: searchTerm,
@@ -211,14 +282,19 @@ function localQuery(namespace, collection, searchFields, searchTerm, state, disp
     };
 
     resultObj.hits = filteredEntries.map(f => f.original);
-    dispatch(querySuccess(namespace, collection, searchFields, searchTerm, resultObj));
+    dispatch(
+      querySuccess(namespace, collection, searchFields, searchTerm, resultObj),
+    );
   } else {
     // Collection entries aren't loaded yet.
     // Dispatch loadEntries and wait before redispatching this action again.
     dispatch({
       type: WAIT_UNTIL_ACTION,
-      predicate: action => (action.type === ENTRIES_SUCCESS && action.payload.collection === collection),
-      run: dispatch => dispatch(query(namespace, collection, searchFields, searchTerm)),
+      predicate: action =>
+        action.type === ENTRIES_SUCCESS &&
+        action.payload.collection === collection,
+      run: dispatch =>
+        dispatch(query(namespace, collection, searchFields, searchTerm)),
     });
     dispatch(loadEntries(state.collections.get(collection)));
   }

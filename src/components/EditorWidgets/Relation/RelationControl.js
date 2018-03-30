@@ -21,10 +21,7 @@ class RelationControl extends Component {
     isFetching: PropTypes.node,
     query: PropTypes.func.isRequired,
     clearSearch: PropTypes.func.isRequired,
-    queryHits: PropTypes.oneOfType([
-      PropTypes.array,
-      PropTypes.object,
-    ]),
+    queryHits: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     classNameWrapper: PropTypes.string.isRequired,
     setActiveStyle: PropTypes.func.isRequired,
     setInactiveStyle: PropTypes.func.isRequired,
@@ -51,12 +48,18 @@ class RelationControl extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.didInitialSearch) return;
-    if (nextProps.queryHits !== this.props.queryHits && nextProps.queryHits.get && nextProps.queryHits.get(this.controlID)) {
+    if (
+      nextProps.queryHits !== this.props.queryHits &&
+      nextProps.queryHits.get &&
+      nextProps.queryHits.get(this.controlID)
+    ) {
       this.didInitialSearch = true;
       const suggestion = nextProps.queryHits.get(this.controlID);
       if (suggestion && suggestion.length === 1) {
         const val = this.getSuggestionValue(suggestion[0]);
-        this.props.onChange(val, { [nextProps.field.get('collection')]: { [val]: suggestion[0].data } });
+        this.props.onChange(val, {
+          [nextProps.field.get('collection')]: { [val]: suggestion[0].data },
+        });
       }
     }
   }
@@ -67,7 +70,9 @@ class RelationControl extends Component {
 
   onSuggestionSelected = (event, { suggestion }) => {
     const value = this.getSuggestionValue(suggestion);
-    this.props.onChange(value, { [this.props.field.get('collection')]: { [value]: suggestion.data } });
+    this.props.onChange(value, {
+      [this.props.field.get('collection')]: { [value]: suggestion.data },
+    });
   };
 
   onSuggestionsFetchRequested = debounce(({ value }) => {
@@ -82,13 +87,13 @@ class RelationControl extends Component {
     this.props.clearSearch();
   };
 
-  getSuggestionValue = (suggestion) => {
+  getSuggestionValue = suggestion => {
     const { field } = this.props;
     const valueField = field.get('valueField');
     return suggestion.data[valueField];
   };
 
-  renderSuggestion = (suggestion) => {
+  renderSuggestion = suggestion => {
     const { field } = this.props;
     const valueField = field.get('valueField');
     return <span>{suggestion.data[valueField]}</span>;
@@ -102,7 +107,7 @@ class RelationControl extends Component {
       queryHits,
       classNameWrapper,
       setActiveStyle,
-      setInactiveStyle
+      setInactiveStyle,
     } = this.props;
 
     const inputProps = {
@@ -115,7 +120,7 @@ class RelationControl extends Component {
       onBlur: setInactiveStyle,
     };
 
-    const suggestions = (queryHits.get) ? queryHits.get(this.controlID, []) : [];
+    const suggestions = queryHits.get ? queryHits.get(this.controlID, []) : [];
 
     return (
       <div>
@@ -151,5 +156,5 @@ export default connect(
   null,
   {
     withRef: true,
-  }
+  },
 )(RelationControl);

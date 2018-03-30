@@ -63,7 +63,7 @@
 }
 
 .nc-controlPane-label {
-  @apply(--controlPaneLabel);
+  @apply (--controlPaneLabel);
 }
 
 .nc-controlPane-labelActive {
@@ -72,7 +72,7 @@
 }
 
 .nc-controlPane-widget {
-  @apply(--controlPaneWidget);
+  @apply (--controlPaneWidget);
 
   &.nc-controlPane-widgetActive {
     border-color: var(--colorActive);

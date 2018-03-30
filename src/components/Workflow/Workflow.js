@@ -8,7 +8,7 @@ import {
   loadUnpublishedEntries,
   updateUnpublishedEntryStatus,
   publishUnpublishedEntry,
-  deleteUnpublishedEntry
+  deleteUnpublishedEntry,
 } from 'Actions/editorialWorkflow';
 import { selectUnpublishedEntriesByStatus } from 'Reducers';
 import { EDITORIAL_WORKFLOW, status } from 'Constants/publishModes';
@@ -28,7 +28,11 @@ class Workflow extends Component {
   };
 
   componentDidMount() {
-    const { loadUnpublishedEntries, isEditorialWorkflow, collections } = this.props;
+    const {
+      loadUnpublishedEntries,
+      isEditorialWorkflow,
+      collections,
+    } = this.props;
     if (isEditorialWorkflow) {
       loadUnpublishedEntries(collections);
     }
@@ -46,7 +50,8 @@ class Workflow extends Component {
     } = this.props;
 
     if (!isEditorialWorkflow) return null;
-    if (isFetching) return <Loader active>Loading Editorial Workflow Entries</Loader>;
+    if (isFetching)
+      return <Loader active>Loading Editorial Workflow Entries</Loader>;
     const reviewCount = unpublishedEntries.get('pending_review').size;
     const readyCount = unpublishedEntries.get('pending_publish').size;
 
@@ -61,19 +66,21 @@ class Workflow extends Component {
               dropdownPosition="left"
               dropdownTopOverlap="40px"
             >
-              {
-                collections.filter(collection => collection.get('create')).toList().map(collection =>
+              {collections
+                .filter(collection => collection.get('create'))
+                .toList()
+                .map(collection => (
                   <DropdownItem
-                    key={collection.get("name")}
-                    label={collection.get("label")}
+                    key={collection.get('name')}
+                    label={collection.get('label')}
                     onClick={() => createNewEntry(collection.get('name'))}
                   />
-                )
-              }
+                ))}
             </Dropdown>
           </div>
           <p className="nc-workflow-top-description">
-            {reviewCount} {reviewCount === 1 ? 'entry' : 'entries'} waiting for review, {readyCount} ready to go live.
+            {reviewCount} {reviewCount === 1 ? 'entry' : 'entries'} waiting for
+            review, {readyCount} ready to go live.
           </p>
         </div>
         <WorkflowList
@@ -89,11 +96,15 @@ class Workflow extends Component {
 
 function mapStateToProps(state) {
   const { collections } = state;
-  const isEditorialWorkflow = (state.config.get('publish_mode') === EDITORIAL_WORKFLOW);
+  const isEditorialWorkflow =
+    state.config.get('publish_mode') === EDITORIAL_WORKFLOW;
   const returnObj = { collections, isEditorialWorkflow };
 
   if (isEditorialWorkflow) {
-    returnObj.isFetching = state.editorialWorkflow.getIn(['pages', 'isFetching'], false);
+    returnObj.isFetching = state.editorialWorkflow.getIn(
+      ['pages', 'isFetching'],
+      false,
+    );
 
     /*
      * Generates an ordered Map of the available status as keys.
@@ -102,7 +113,7 @@ function mapStateToProps(state) {
      */
     returnObj.unpublishedEntries = status.reduce((acc, currStatus) => {
       const entries = selectUnpublishedEntriesByStatus(state, currStatus);
-      return acc.set(currStatus, entries)
+      return acc.set(currStatus, entries);
     }, OrderedMap());
   }
   return returnObj;

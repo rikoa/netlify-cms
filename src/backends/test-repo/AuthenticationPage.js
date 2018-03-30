@@ -8,7 +8,7 @@ export default class AuthenticationPage extends React.Component {
     inProgress: PropTypes.bool,
   };
 
-  handleLogin = (e) => {
+  handleLogin = e => {
     e.preventDefault();
     this.props.onLogin(this.state);
   };
@@ -18,13 +18,17 @@ export default class AuthenticationPage extends React.Component {
 
     return (
       <section className="nc-githubAuthenticationPage-root">
-        <Icon className="nc-githubAuthenticationPage-logo" size="500px" type="netlify-cms"/>
+        <Icon
+          className="nc-githubAuthenticationPage-logo"
+          size="500px"
+          type="netlify-cms"
+        />
         <button
           className="nc-githubAuthenticationPage-button"
           disabled={inProgress}
           onClick={this.handleLogin}
         >
-          {inProgress ? "Logging in..." : "Login"}
+          {inProgress ? 'Logging in...' : 'Login'}
         </button>
       </section>
     );

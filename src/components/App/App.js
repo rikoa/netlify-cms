@@ -6,7 +6,10 @@ import { Route, Switch, Link, Redirect } from 'react-router-dom';
 import { Notifs } from 'redux-notifications';
 import TopBarProgress from 'react-topbar-progress-indicator';
 import { loadConfig as actionLoadConfig } from 'Actions/config';
-import { loginUser as actionLoginUser, logoutUser as actionLogoutUser } from 'Actions/auth';
+import {
+  loginUser as actionLoginUser,
+  logoutUser as actionLogoutUser,
+} from 'Actions/auth';
 import { currentBackend } from 'Backends/backend';
 import { showCollection, createNewEntry } from 'Actions/collections';
 import { openMediaLibrary as actionOpenMediaLibrary } from 'Actions/mediaLibrary';
@@ -25,7 +28,7 @@ TopBarProgress.config({
     /**
      * Uses value from CSS --colorActive.
      */
-    "0": '#3a69c8',
+    '0': '#3a69c8',
     '1.0': '#3a69c8',
   },
   shadowBlur: 0,
@@ -33,7 +36,6 @@ TopBarProgress.config({
 });
 
 class App extends React.Component {
-
   static propTypes = {
     auth: ImmutablePropTypes.map,
     config: ImmutablePropTypes.map,
@@ -47,15 +49,22 @@ class App extends React.Component {
   };
 
   static configError(config) {
-    return (<div>
-      <h1>Error loading the CMS configuration</h1>
-
+    return (
       <div>
-        <p>The <code>config.yml</code> file could not be loaded or failed to parse properly.</p>
-        <p><strong>Error message:</strong> {config.get('error')}</p>
-        <p>Check your console for details.</p>
+        <h1>Error loading the CMS configuration</h1>
+
+        <div>
+          <p>
+            The <code>config.yml</code> file could not be loaded or failed to
+            parse properly.
+          </p>
+          <p>
+            <strong>Error message:</strong> {config.get('error')}
+          </p>
+          <p>Check your console for details.</p>
+        </div>
       </div>
-    </div>);
+    );
   }
 
   componentDidMount() {
@@ -71,21 +80,23 @@ class App extends React.Component {
     const backend = currentBackend(this.props.config);
 
     if (backend == null) {
-      return <div><h1>Waiting for backend...</h1></div>;
+      return (
+        <div>
+          <h1>Waiting for backend...</h1>
+        </div>
+      );
     }
 
     return (
       <div>
         <Notifs CustomComponent={Toast} />
-        {
-          React.createElement(backend.authComponent(), {
-            onLogin: this.handleLogin.bind(this),
-            error: auth && auth.get('error'),
-            isFetching: auth && auth.get('isFetching'),
-            siteId: this.props.config.getIn(["backend", "site_domain"]),
-            base_url: this.props.config.getIn(["backend", "base_url"], null)
-          })
-        }
+        {React.createElement(backend.authComponent(), {
+          onLogin: this.handleLogin.bind(this),
+          error: auth && auth.get('error'),
+          isFetching: auth && auth.get('isFetching'),
+          siteId: this.props.config.getIn(['backend', 'site_domain']),
+          base_url: this.props.config.getIn(['backend', 'base_url'], null),
+        })}
       </div>
     );
   }
@@ -138,19 +149,30 @@ class App extends React.Component {
           displayUrl={config.get('display_url')}
         />
         <div className="nc-app-main">
-          { isFetching && <TopBarProgress /> }
+          {isFetching && <TopBarProgress />}
           <div>
             <Switch>
               <Redirect exact from="/" to={defaultPath} />
               <Redirect exact from="/search/" to={defaultPath} />
-              { hasWorkflow ? <Route path="/workflow" component={Workflow}/> : null }
+              {hasWorkflow ? (
+                <Route path="/workflow" component={Workflow} />
+              ) : null}
               <Route exact path="/collections/:name" component={Collection} />
-              <Route path="/collections/:name/new" render={props => <Editor {...props} newRecord />} />
-              <Route path="/collections/:name/entries/:slug" component={Editor} />
-              <Route path="/search/:searchTerm" render={props => <Collection {...props} isSearchResults />} />
+              <Route
+                path="/collections/:name/new"
+                render={props => <Editor {...props} newRecord />}
+              />
+              <Route
+                path="/collections/:name/entries/:slug"
+                component={Editor}
+              />
+              <Route
+                path="/search/:searchTerm"
+                render={props => <Collection {...props} isSearchResults />}
+              />
               <Route component={NotFoundPage} />
             </Switch>
-            <MediaLibrary/>
+            <MediaLibrary />
           </div>
         </div>
       </div>

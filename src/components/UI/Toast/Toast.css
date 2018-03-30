@@ -4,7 +4,7 @@
 }
 
 .nc-toast {
-  @apply(--dropShadow);
+  @apply (--dropShadow);
   background-color: var(--colorBackground);
   color: var(--colorTextLight);
   border-radius: var(--borderRadius);

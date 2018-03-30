@@ -1,5 +1,5 @@
 .nc-entryListing-gridCard {
-  @apply(--card);
+  @apply (--card);
   flex: 0 0 335px;
   height: 240px;
   background-color: var(--colorForeground);
@@ -40,7 +40,7 @@
 }
 
 .nc-entryListing-listCard {
-  @apply(--card);
+  @apply (--card);
   width: var(--topCardWidth);
   max-width: 100%;
   padding: 16px 22px;

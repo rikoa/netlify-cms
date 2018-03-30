@@ -16,7 +16,7 @@ const getRotation = (iconDirection, newDirection) => {
   const rotations = { right: 90, down: 180, left: 270, up: 360 };
   const degrees = rotations[newDirection] - rotations[iconDirection];
   return `${degrees}deg`;
-}
+};
 
 const sizes = {
   xsmall: '12px',
@@ -36,13 +36,13 @@ export const Icon = props => {
     ...remainingProps
   } = props;
   const icon = icons[type];
-  const rotation = getRotation(icon.direction, direction)
+  const rotation = getRotation(icon.direction, direction);
   const transform = `rotate(${rotation})`;
   const sizeResolved = sizes[size] || size;
   const style = { width: sizeResolved, height: sizeResolved, transform };
   return (
     <span className={`nc-icon ${className}`} {...remainingProps}>
-      <span dangerouslySetInnerHTML={{ __html: icon.image }} style={style}></span>
+      <span dangerouslySetInnerHTML={{ __html: icon.image }} style={style} />
     </span>
   );
-}
+};

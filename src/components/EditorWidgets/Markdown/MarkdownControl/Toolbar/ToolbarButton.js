@@ -8,12 +8,14 @@ const ToolbarButton = ({ type, label, icon, onClick, isActive, disabled }) => {
 
   return (
     <button
-      className={c('nc-toolbarButton-button', { ['nc-toolbarButton-active']: active })}
+      className={c('nc-toolbarButton-button', {
+        ['nc-toolbarButton-active']: active,
+      })}
       onClick={e => onClick && onClick(e, type)}
       title={label}
       disabled={disabled}
     >
-      { icon ? <Icon type={icon}/> : label }
+      {icon ? <Icon type={icon} /> : label}
     </button>
   );
 };

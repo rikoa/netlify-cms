@@ -3,7 +3,7 @@
 }
 
 .nc-appHeader-main {
-  @apply(--dropShadowMain);
+  @apply (--dropShadowMain);
   position: fixed;
   width: 100%;
   top: 0;
@@ -61,8 +61,8 @@
 }
 
 .nc-appHeader-quickNew {
-  @apply(--buttonMedium);
-  @apply(--buttonGray);
+  @apply (--buttonMedium);
+  @apply (--buttonGray);
   margin-right: 8px;
 
   &:after {

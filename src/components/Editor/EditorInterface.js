@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import SplitPane from 'react-split-pane';
 import classnames from 'classnames';
 import { ScrollSync, ScrollSyncPane } from './EditorScrollSync';
-import { Icon } from 'UI'
+import { Icon } from 'UI';
 import EditorControlPane from './EditorControlPane/EditorControlPane';
 import EditorPreviewPane from './EditorPreviewPane/EditorPreviewPane';
 import EditorToolbar from './EditorToolbar';
@@ -16,8 +16,8 @@ const SCROLL_SYNC_ENABLED = 'cms.scroll-sync-enabled';
 class EditorInterface extends Component {
   state = {
     showEventBlocker: false,
-    previewVisible: localStorage.getItem(PREVIEW_VISIBLE) !== "false",
-    scrollSyncEnabled: localStorage.getItem(SCROLL_SYNC_ENABLED) !== "false",
+    previewVisible: localStorage.getItem(PREVIEW_VISIBLE) !== 'false',
+    scrollSyncEnabled: localStorage.getItem(SCROLL_SYNC_ENABLED) !== 'false',
   };
 
   handleSplitPaneDragStart = () => {
@@ -85,10 +85,17 @@ class EditorInterface extends Component {
 
     const { previewVisible, scrollSyncEnabled, showEventBlocker } = this.state;
 
-    const collectionPreviewEnabled = collection.getIn(['editor', 'preview'], true);
+    const collectionPreviewEnabled = collection.getIn(
+      ['editor', 'preview'],
+      true,
+    );
 
     const editor = (
-      <div className={classnames('nc-entryEditor-controlPane', { 'nc-entryEditor-blocker': showEventBlocker })}>
+      <div
+        className={classnames('nc-entryEditor-controlPane', {
+          'nc-entryEditor-blocker': showEventBlocker,
+        })}
+      >
         <EditorControlPane
           collection={collection}
           entry={entry}
@@ -102,7 +109,7 @@ class EditorInterface extends Component {
           onOpenMediaLibrary={onOpenMediaLibrary}
           onAddAsset={onAddAsset}
           onRemoveInsertedMedia={onRemoveInsertedMedia}
-          ref={c => this.controlPaneRef = c} // eslint-disable-line
+          ref={c => (this.controlPaneRef = c)} // eslint-disable-line
         />
       </div>
     );
@@ -117,7 +124,11 @@ class EditorInterface extends Component {
             onDragFinished={this.handleSplitPaneDragFinished}
           >
             <ScrollSyncPane>{editor}</ScrollSyncPane>
-            <div className={classnames('nc-entryEditor-previewPane', { 'nc-entryEditor-blocker': showEventBlocker })}>
+            <div
+              className={classnames('nc-entryEditor-previewPane', {
+                'nc-entryEditor-blocker': showEventBlocker,
+              })}
+            >
               <EditorPreviewPane
                 collection={collection}
                 entry={entry}
@@ -132,9 +143,7 @@ class EditorInterface extends Component {
     );
 
     const editorWithoutPreview = (
-      <div className="nc-entryEditor-noPreviewEditorContainer">
-        {editor}
-      </div>
+      <div className="nc-entryEditor-noPreviewEditorContainer">{editor}</div>
     );
 
     return (
@@ -179,11 +188,9 @@ class EditorInterface extends Component {
               icon="scroll"
             />
           </div>
-          {
-            collectionPreviewEnabled && this.state.previewVisible
-              ? editorWithPreview
-              : editorWithoutPreview
-          }
+          {collectionPreviewEnabled && this.state.previewVisible
+            ? editorWithPreview
+            : editorWithoutPreview}
         </div>
       </div>
     );

@@ -2,13 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const ErrorComponent = () => {
-  const issueUrl = "https://github.com/netlify/netlify-cms/issues/new";
+  const issueUrl = 'https://github.com/netlify/netlify-cms/issues/new';
   return (
     <div className="nc-errorBoundary">
       <h1 className="nc-errorBoundary-heading">Sorry!</h1>
       <p>
         <span>There's been an error - please </span>
-        <a href={issueUrl} target="_blank" className="nc-errorBoundary-link">report it</a>!
+        <a href={issueUrl} target="_blank" className="nc-errorBoundary-link">
+          report it
+        </a>!
       </p>
     </div>
   );
@@ -29,7 +31,7 @@ export class ErrorBoundary extends React.Component {
   }
 
   render() {
-    const errorComponent = this.props.errorComponent || <ErrorComponent/>;
+    const errorComponent = this.props.errorComponent || <ErrorComponent />;
     return this.state.hasError ? errorComponent : this.props.children;
   }
 }

@@ -38,21 +38,31 @@ export default class EditorToolbar extends React.Component {
     const { showDelete, onDelete } = this.props;
     return (
       <div>
-        {
-          showDelete
-            ? <button className="nc-entryEditor-toolbar-deleteButton" onClick={onDelete}>
-                Delete entry
-              </button>
-            : null
-        }
+        {showDelete ? (
+          <button
+            className="nc-entryEditor-toolbar-deleteButton"
+            onClick={onDelete}
+          >
+            Delete entry
+          </button>
+        ) : null}
       </div>
     );
   };
 
   renderSimplePublishControls = () => {
-    const { collection, onPersist, onPersistAndNew, isPersisting, hasChanged, isNewEntry } = this.props;
+    const {
+      collection,
+      onPersist,
+      onPersistAndNew,
+      isPersisting,
+      hasChanged,
+      isNewEntry,
+    } = this.props;
     if (!isNewEntry && !hasChanged) {
-      return <div className="nc-entryEditor-toolbar-statusPublished">Published</div>;
+      return (
+        <div className="nc-entryEditor-toolbar-statusPublished">Published</div>
+      );
     }
     return (
       <div>
@@ -63,12 +73,19 @@ export default class EditorToolbar extends React.Component {
           dropdownWidth="150px"
           label={isPersisting ? 'Publishing...' : 'Publish'}
         >
-          <DropdownItem label="Publish now" icon="arrow" iconDirection="right" onClick={onPersist}/>
-          {
-            collection.get('create')
-              ? <DropdownItem label="Publish and create new" icon="add" onClick={onPersistAndNew}/>
-              : null
-          }
+          <DropdownItem
+            label="Publish now"
+            icon="arrow"
+            iconDirection="right"
+            onClick={onPersist}
+          />
+          {collection.get('create') ? (
+            <DropdownItem
+              label="Publish and create new"
+              icon="add"
+              onClick={onPersistAndNew}
+            />
+          ) : null}
         </Dropdown>
       </div>
     );
@@ -87,24 +104,32 @@ export default class EditorToolbar extends React.Component {
       isModification,
     } = this.props;
 
-    const deleteLabel = (hasUnpublishedChanges && isModification && 'Delete unpublished changes')
-      || (hasUnpublishedChanges && (isNewEntry || !isModification) && 'Delete unpublished entry')
-      || (!hasUnpublishedChanges && !isModification && 'Delete published entry');
+    const deleteLabel =
+      (hasUnpublishedChanges &&
+        isModification &&
+        'Delete unpublished changes') ||
+      (hasUnpublishedChanges &&
+        (isNewEntry || !isModification) &&
+        'Delete unpublished entry') ||
+      (!hasUnpublishedChanges && !isModification && 'Delete published entry');
 
     return [
+      <button
+        className="nc-entryEditor-toolbar-saveButton"
+        onClick={() => hasChanged && onPersist()}
+      >
+        {isPersisting ? 'Saving...' : 'Save'}
+      </button>,
+      isNewEntry || !deleteLabel ? null : (
         <button
-          className="nc-entryEditor-toolbar-saveButton"
-          onClick={() => hasChanged && onPersist()}
+          className="nc-entryEditor-toolbar-deleteButton"
+          onClick={
+            hasUnpublishedChanges ? onDeleteUnpublishedChanges : onDelete
+          }
         >
-          {isPersisting ? 'Saving...' : 'Save'}
-        </button>,
-        isNewEntry || !deleteLabel ? null
-            : <button
-                className="nc-entryEditor-toolbar-deleteButton"
-                onClick={hasUnpublishedChanges ? onDeleteUnpublishedChanges : onDelete}
-              >
-                {isDeleting ? 'Deleting...' : deleteLabel}
-              </button>,
+          {isDeleting ? 'Deleting...' : deleteLabel}
+        </button>
+      ),
     ];
   };
 
@@ -156,22 +181,29 @@ export default class EditorToolbar extends React.Component {
           dropdownWidth="150px"
           label={isPublishing ? 'Publishing...' : 'Publish'}
         >
-          <DropdownItem label="Publish now" icon="arrow" iconDirection="right" onClick={onPublish}/>
-          {
-            collection.get('create')
-              ? <DropdownItem label="Publish and create new" icon="add" onClick={onPublishAndNew}/>
-              : null
-          }
-        </Dropdown>
+          <DropdownItem
+            label="Publish now"
+            icon="arrow"
+            iconDirection="right"
+            onClick={onPublish}
+          />
+          {collection.get('create') ? (
+            <DropdownItem
+              label="Publish and create new"
+              icon="add"
+              onClick={onPublishAndNew}
+            />
+          ) : null}
+        </Dropdown>,
       ];
     }
 
     if (!isNewEntry) {
-      return <div className="nc-entryEditor-toolbar-statusPublished">Published</div>;
+      return (
+        <div className="nc-entryEditor-toolbar-statusPublished">Published</div>
+      );
     }
   };
-
-
 
   render() {
     const {
@@ -194,53 +226,73 @@ export default class EditorToolbar extends React.Component {
 
     return (
       <div className="nc-entryEditor-toolbar">
-        <Link to={`/collections/${collection.get('name')}`} className="nc-entryEditor-toolbar-backSection">
+        <Link
+          to={`/collections/${collection.get('name')}`}
+          className="nc-entryEditor-toolbar-backSection"
+        >
           <div className="nc-entryEditor-toolbar-backArrow">←</div>
           <div>
             <div className="nc-entryEditor-toolbar-backCollection">
               Writing in <strong>{collection.get('label')}</strong> collection
             </div>
-            {
-              hasChanged
-               ? <div className="nc-entryEditor-toolbar-backStatus-hasChanged">Unsaved Changes</div>
-               : <div className="nc-entryEditor-toolbar-backStatus">Changes saved</div>
-            }
+            {hasChanged ? (
+              <div className="nc-entryEditor-toolbar-backStatus-hasChanged">
+                Unsaved Changes
+              </div>
+            ) : (
+              <div className="nc-entryEditor-toolbar-backStatus">
+                Changes saved
+              </div>
+            )}
           </div>
         </Link>
         <div className="nc-entryEditor-toolbar-mainSection">
           <div className="nc-entryEditor-toolbar-mainSection-left">
-            { hasWorkflow ? this.renderWorkflowSaveControls() : this.renderSimpleSaveControls() }
+            {hasWorkflow
+              ? this.renderWorkflowSaveControls()
+              : this.renderSimpleSaveControls()}
           </div>
           <div className="nc-entryEditor-toolbar-mainSection-right">
-            { hasWorkflow ? this.renderWorkflowPublishControls() : this.renderSimplePublishControls() }
+            {hasWorkflow
+              ? this.renderWorkflowPublishControls()
+              : this.renderSimplePublishControls()}
           </div>
         </div>
         <div className="nc-entryEditor-toolbar-metaSection">
-          {
-            displayUrl
-              ? <a className="nc-appHeader-siteLink" href={displayUrl} target="_blank">
-                  {stripProtocol(displayUrl)}
-                </a>
-              : null
-          }
+          {displayUrl ? (
+            <a
+              className="nc-appHeader-siteLink"
+              href={displayUrl}
+              target="_blank"
+            >
+              {stripProtocol(displayUrl)}
+            </a>
+          ) : null}
           <Dropdown
             dropdownTopOverlap="50px"
             dropdownWidth="100px"
             dropdownPosition="right"
             button={
               <button className="nc-appHeader-avatar">
-                {
-                  avatarUrl
-                    ? <img className="nc-appHeader-avatar-image" src={user.get('avatar_url')}/>
-                    : <Icon className="nc-appHeader-avatar-placeholder" type="user" size="large"/>
-                }
+                {avatarUrl ? (
+                  <img
+                    className="nc-appHeader-avatar-image"
+                    src={user.get('avatar_url')}
+                  />
+                ) : (
+                  <Icon
+                    className="nc-appHeader-avatar-placeholder"
+                    type="user"
+                    size="large"
+                  />
+                )}
               </button>
             }
           >
-            <DropdownItem label="Log Out" onClick={onLogoutClick}/>
+            <DropdownItem label="Log Out" onClick={onLogoutClick} />
           </Dropdown>
         </div>
       </div>
     );
   }
-};
+}

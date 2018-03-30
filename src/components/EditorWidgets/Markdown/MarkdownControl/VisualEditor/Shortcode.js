@@ -25,23 +25,24 @@ class Shortcode extends React.Component {
 
   handleChange = (fieldName, value) => {
     const { editor, node } = this.props;
-    const shortcodeData = Map(node.data.get('shortcodeData')).set(fieldName, value);
+    const shortcodeData = Map(node.data.get('shortcodeData')).set(
+      fieldName,
+      value,
+    );
     const data = node.data.set('shortcodeData', shortcodeData);
     editor.change(c => c.setNodeByKey(node.key, { data }));
   };
 
   handleCollapseToggle = () => {
     this.setState({ collapsed: !this.state.collapsed });
-  }
+  };
 
   handleRemove = () => {
     const { editor, node } = this.props;
     editor.change(change => {
-      change
-        .removeNodeByKey(node.key)
-        .focus();
+      change.removeNodeByKey(node.key).focus();
     });
-  }
+  };
 
   handleClick = event => {
     /**
@@ -56,7 +57,7 @@ class Shortcode extends React.Component {
     if (this.state.collapsed) {
       this.handleCollapseToggle();
     }
-  }
+  };
 
   renderControl = (shortcodeData, field, index) => {
     const {
@@ -67,7 +68,7 @@ class Shortcode extends React.Component {
       onRemoveInsertedMedia,
     } = this.props;
     const value = shortcodeData.get(field.get('name'));
-    const key = `field-${ field.get('name') }`;
+    const key = `field-${field.get('name')}`;
     const Control = getEditorControl();
     const controlProps = {
       field,
@@ -82,7 +83,7 @@ class Shortcode extends React.Component {
 
     return (
       <div key={key}>
-        <Control {...controlProps}/>
+        <Control {...controlProps} />
       </div>
     );
   };
@@ -93,11 +94,9 @@ class Shortcode extends React.Component {
     const pluginId = node.data.get('shortcode');
     const shortcodeData = Map(this.props.node.data.get('shortcodeData'));
     const plugin = getEditorComponents().get(pluginId);
-    const className = c(
-      'nc-objectControl-root',
-      'nc-visualEditor-shortcode',
-      { 'nc-visualEditor-shortcode-collapsed': collapsed },
-    );
+    const className = c('nc-objectControl-root', 'nc-visualEditor-shortcode', {
+      'nc-visualEditor-shortcode-collapsed': collapsed,
+    });
     return (
       <div {...attributes} className={className} onClick={this.handleClick}>
         <ListItemTopBar
@@ -106,11 +105,13 @@ class Shortcode extends React.Component {
           onCollapseToggle={this.handleCollapseToggle}
           onRemove={this.handleRemove}
         />
-        {
-          collapsed
-            ? <div className="nc-visualEditor-shortcode-collapsedTitle">{capitalize(pluginId)}</div>
-            : plugin.get('fields').map(partial(this.renderControl, shortcodeData))
-        }
+        {collapsed ? (
+          <div className="nc-visualEditor-shortcode-collapsedTitle">
+            {capitalize(pluginId)}
+          </div>
+        ) : (
+          plugin.get('fields').map(partial(this.renderControl, shortcodeData))
+        )}
       </div>
     );
   }

@@ -21,7 +21,9 @@ const WorkflowCard = ({
     <Link to={editLink} className="nc-workflow-link">
       <div className="nc-workflow-card-collection">{collectionName}</div>
       <h2 className="nc-workflow-card-title">{title}</h2>
-      <div className="nc-workflow-card-date">{timestamp} by {authorLastChange}</div>
+      <div className="nc-workflow-card-date">
+        {timestamp} by {authorLastChange}
+      </div>
       <p className="nc-workflow-card-body">{body}</p>
     </Link>
     <div className="nc-workflow-card-button-container">

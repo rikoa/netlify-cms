@@ -16,7 +16,7 @@
 }
 
 .nc-toggle-switch {
-  @apply(--dropShadowDeep);
+  @apply (--dropShadowDeep);
   position: absolute;
   left: 0;
   top: 0;

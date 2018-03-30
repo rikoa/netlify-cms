@@ -9,7 +9,7 @@ const outputReplacer = (key, value) => {
     return value.format(value._f);
   }
   if (value instanceof AssetProxy) {
-    return `${ value.path }`;
+    return `${value.path}`;
   }
   // Return `false` to use default (`undefined` would delete key).
   return false;
@@ -21,6 +21,9 @@ export default {
   },
 
   toFile(data, sortedKeys = []) {
-    return tomlify.toToml(data, { replace: outputReplacer, sort: sortKeys(sortedKeys) });
-  }
-}
+    return tomlify.toToml(data, {
+      replace: outputReplacer,
+      sort: sortKeys(sortedKeys),
+    });
+  },
+};

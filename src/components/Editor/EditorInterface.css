@@ -30,7 +30,7 @@
 
 .SplitPane,
 .nc-entryEditor-noPreviewEditorContainer {
-  @apply(--card);
+  @apply (--card);
   border-radius: 0;
   height: 100%;
 }

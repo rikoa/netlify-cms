@@ -24,7 +24,7 @@
 }
 
 .nc-modal-body {
-  @apply(--dropShadowDeep);
+  @apply (--dropShadowDeep);
   background-color: #fff;
   border-radius: var(--borderRadius);
   height: 80%;

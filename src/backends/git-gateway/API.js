@@ -1,5 +1,5 @@
-import GithubAPI from "Backends/github/API";
-import { APIError } from "ValueObjects/errors";
+import GithubAPI from 'Backends/github/API';
+import { APIError } from 'ValueObjects/errors';
 
 export default class API extends GithubAPI {
   constructor(config) {
@@ -7,7 +7,7 @@ export default class API extends GithubAPI {
     this.api_root = config.api_root;
     this.tokenPromise = config.tokenPromise;
     this.commitAuthor = config.commitAuthor;
-    this.repoURL = "";
+    this.repoURL = '';
   }
 
   hasWriteAccess() {
@@ -15,24 +15,25 @@ export default class API extends GithubAPI {
       .then(() => true)
       .catch(error => {
         if (error.status === 401) {
-          if (error.message === "Bad credentials") {
-            throw new Error("Git Gateway Error: Please ask your site administrator to reissue the Git Gateway token.");
+          if (error.message === 'Bad credentials') {
+            throw new Error(
+              'Git Gateway Error: Please ask your site administrator to reissue the Git Gateway token.',
+            );
           } else {
             return false;
           }
         } else {
-          console.error("Problem fetching repo data from GitHub");
+          console.error('Problem fetching repo data from GitHub');
           throw error;
         }
       });
   }
 
   getRequestHeaders(headers = {}) {
-    return this.tokenPromise()
-    .then((jwtToken) => {
+    return this.tokenPromise().then(jwtToken => {
       const baseHeader = {
-        "Authorization": `Bearer ${ jwtToken }`,
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json',
         ...headers,
       };
 
@@ -40,17 +41,16 @@ export default class API extends GithubAPI {
     });
   }
 
-
   urlFor(path, options) {
     const cacheBuster = new Date().getTime();
-    const params = [`ts=${ cacheBuster }`];
+    const params = [`ts=${cacheBuster}`];
     if (options.params) {
       for (const key in options.params) {
-        params.push(`${ key }=${ encodeURIComponent(options.params[key]) }`);
+        params.push(`${key}=${encodeURIComponent(options.params[key])}`);
       }
     }
     if (params.length) {
-      path += `?${ params.join("&") }`;
+      path += `?${params.join('&')}`;
     }
     return this.api_root + path;
   }
@@ -63,19 +63,19 @@ export default class API extends GithubAPI {
     const url = this.urlFor(path, options);
     let responseStatus;
     return this.getRequestHeaders(options.headers || {})
-    .then(headers => fetch(url, { ...options, headers }))
-    .then((response) => {
-      responseStatus = response.status;
-      const contentType = response.headers.get("Content-Type");
-      if (contentType && contentType.match(/json/)) {
-        return this.parseJsonResponse(response);
-      }
+      .then(headers => fetch(url, { ...options, headers }))
+      .then(response => {
+        responseStatus = response.status;
+        const contentType = response.headers.get('Content-Type');
+        if (contentType && contentType.match(/json/)) {
+          return this.parseJsonResponse(response);
+        }
 
-      return response.text();
-    })
-    .catch(error => {
-      throw new APIError(error.message, responseStatus, 'Git Gateway');
-    });
+        return response.text();
+      })
+      .catch(error => {
+        throw new APIError(error.message, responseStatus, 'Git Gateway');
+      });
   }
 
   commit(message, changeTree) {
@@ -92,10 +92,9 @@ export default class API extends GithubAPI {
       };
     }
 
-    return this.request("/git/commits", {
-      method: "POST",
+    return this.request('/git/commits', {
+      method: 'POST',
       body: JSON.stringify(commitParams),
     });
   }
-
 }
